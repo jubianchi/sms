@@ -15,9 +15,7 @@ app.all('/api/:user', async (req, res) => {
 
   await client.chat.postMessage({
       channel: req.params.user,
-      username: "SMS",
       text: `*From:* +${req.query.msisdn}\n*To:* ${req.query.to}\n\n${req.query.text}\n`,
-      icon_emoji: ":envelope:",
       blocks: [
         {
           "type": "header",
