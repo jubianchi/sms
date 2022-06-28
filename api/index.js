@@ -11,32 +11,47 @@ app.all('/api/:user', async (req, res) => {
     logLevel: LogLevel.INFO
   });
 
+  const date = new Date(`${req.query['message-timestamp']} +0000`);
+
   await client.chat.postMessage({
       channel: req.params.user,
       username: "SMS",
-      text: `*From:* +${req.query.msisdn}\n*Text:*\n${req.query.text}`,
+      text: `*From:* +${req.query.msisdn}\n*To:* ${req.query.to}\n\n${req.query.text}\n`,
       icon_emoji: ":envelope:",
-      "blocks": [
+      blocks: [
+        {
+          "type": "header",
+          "text": {
+            "type": "plain_text",
+            "text": "Incoming SMS"
+          }
+        },
+        {
+          "type": "context",
+          "elements": [
+            {
+              "type": "mrkdwn",
+              "text": `:clock7: Date: *${date.toLocaleString('fr-FR', 'Europe/Paris')}*`
+            },
+            {
+              "type": "mrkdwn",
+              "text": `:iphone: From: *+${req.query.msisdn}*`
+            },
+            {
+              "type": "mrkdwn",
+              "text": `:iphone: To: *+${req.query.to}*`
+            }
+          ]
+        },
+        {
+          "type": "divider"
+        },
         {
           "type": "section",
-          "fields": [
-            {
-              "type": "mrkdwn",
-              "text": `*From:* +${req.query.msisdn}`
-            },
-            {
-              "type": "mrkdwn",
-              "text": `*To:* +${req.query.to}`
-            },
-            {
-              "type": "mrkdwn",
-              "text": `*Date:* ${req.query['message-timestamp']}`
-            },
-          ],
           "text": {
-            "text": req.query.text,
+            "text": `${req.query.text}\n`,
             "type": "mrkdwn"
-          },
+          }
         }
       ]
   });
