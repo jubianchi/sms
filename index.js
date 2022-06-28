@@ -10,4 +10,4 @@ app.post('/webhooks/inbound-message', (req, res) => {
   res.status(200).end();
 });
 
-app.listen(3000)
+module.exports = app;
