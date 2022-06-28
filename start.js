@@ -1,3 +1,3 @@
-const app = require('.');
+const app = require('./api');
 
-app.listen(3000);
+app.listen(3600);
