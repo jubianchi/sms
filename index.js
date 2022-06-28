@@ -1,11 +1,10 @@
-const express = require('express');
+const app = require('express')();
 const bodyParser = require('body-parser');
-const app = express();
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.post('/webhooks/inbound-message', (req, res) => {
+app.post('/api', (req, res) => {
   console.log(req.body);
   res.status(200).end();
 });
